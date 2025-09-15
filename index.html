@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -253,13 +253,7 @@
       background: #000;
       color: #fff;
     }
-    .modal-buttons .buy-btn {
-      background: #000;
-      color: #fff;
-    }
-    .modal-buttons .buy-btn:hover {
-      background: #333;
-    }
+
     .cart-modal {
       display: none;
       position: fixed;
@@ -298,6 +292,22 @@
       border: 1px solid #ccc;
       padding: 10px;
     }
+
+    /* Сетка на мобилке (по желанию можно уменьшить gap) */
+.collections {
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Делаем превью квадратными */
+.collection-item img {
+  width: 100%;
+  height: auto;          /* убираем фиксированную высоту 400px */
+  aspect-ratio: 1 / 1;   /* квадрат */
+  object-fit: cover;     /* без искажений, обрезка по краям */
+  display: block;
+}
+
     .cart-item {
       display: flex;
       align-items: center;
@@ -322,7 +332,7 @@
       opacity: 0.5;
     }
     .cart-item.unavailable h4::after {
-      content: ' (недоступно)';
+      content: ' (unavailable)';
       color: red;
       font-size: 0.8rem;
     }
@@ -415,6 +425,53 @@
     .cart-buttons button:hover {
       background: #333;
     }
+
+    /* SUCCESS MESSAGE STYLES */
+    .order-success {
+      display: none;
+      position: fixed;
+      left: 50%;
+      top: 20%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background: linear-gradient(135deg, #e6ffed 0%, #dff7e6 100%);
+      border: 2px solid #2ecc71;
+      color: #0b3b1f;
+      padding: 20px 28px;
+      width: calc(100% - 40px);
+      max-width: 520px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      border-radius: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-weight: 600;
+    }
+    .order-success .icon {
+      font-size: 1.5rem;
+      background: #2ecc71;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .order-success .text {
+      flex: 1;
+      font-size: 1rem;
+    }
+    .order-success .close-success {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #0b3b1f;
+    }
+    /* end success styles */
+
     footer {
       padding: 50px 5%;
       text-align: center;
@@ -453,40 +510,260 @@
       .cart-contact {
         grid-template-columns: 1fr;
       }
+      .order-success {
+        top: 10%;
+        width: calc(100% - 20px);
+        padding: 16px;
+        max-width: 420px;
+      }
+    }
+
+    /* DANGER вариант notice-modal (для unavailable items) */
+.notice-modal--danger .notice-modal__content{
+  border-color:#ff3b3b;
+  box-shadow:8px 8px 0 #000;
+}
+.notice-modal--danger .notice-modal__icon{
+  background:#ffb3b3;
+  color:#6b0b0b;
+  border-color:#ff3b3b;
+}
+.notice-modal--danger .notice-modal__body h3{
+  color:#6b0b0b;
+}
+
+    /* FIELD ALERT (styled validation message) */
+    .field-alert {
+      display: none; /* hidden by default */
+      position: fixed;
+      left: 50%;
+      top: 28%;
+      transform: translateX(-50%);
+      z-index: 1100;
+      background: linear-gradient(135deg,#fff0f0 0%, #ffecec 100%);
+      border: 2px solid #ff6b6b;
+      color: #6b0b0b;
+      padding: 14px 20px;
+      width: calc(100% - 40px);
+      max-width: 540px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+      border-radius: 10px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.98rem;
+    }
+    .field-alert .icon {
+      font-size: 1.2rem;
+      background: #ff6b6b;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .field-alert .text { flex: 1; }
+    .field-alert .close-field-alert {
+      background: transparent;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: #6b0b0b;
+    }
+
+    /* quantity controls in cart */
+.cart-quantity {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.qty-btn {
+  width: 26px;
+  height: 26px;
+  border: 1px solid #000;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 1;
+  transition: all 0.2s;
+}
+
+.qty-btn:hover { background: #000; color: #fff; }
+
+.qty-value {
+  min-width: 22px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* Cart update notice modal */
+.notice-modal{
+  display:none;            /* скрыта по умолчанию */
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.65);
+  z-index:1200;
+  align-items:center;
+  justify-content:center;
+}
+.notice-modal__content{
+  background:#fff;
+  border:1px solid #000;
+  box-shadow:8px 8px 0 #000;
+  width:min(560px, calc(100% - 40px));
+  padding:20px;
+  border-radius:12px;
+  position:relative;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:14px;
+}
+.notice-modal__close{
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:#fff;
+  border:1px solid #000;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:1rem;
+  font-weight:700;
+  line-height:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.notice-modal__icon{
+  background:#ffe08a;
+  color:#5a4300;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.1rem;
+  border:2px solid #000;
+}
+.notice-modal__body h3{
+  font-size:1.1rem;
+  margin:0 0 6px 0;
+}
+.notice-modal__body p{
+  color:#333;
+  line-height:1.45;
+}
+.notice-modal__ok{
+  grid-column:1 / -1;
+  margin-top:6px;
+  padding:10px 16px;
+  background:#000;
+  color:#fff;
+  border:1px solid #000;
+  cursor:pointer;
+  text-transform:uppercase;
+  font-weight:600;
+  transition:background .2s;
+}
+.notice-modal__ok:hover{ background:#333; }
+
+html { scroll-behavior: smooth; }
+
+/* чтобы якорь не прятался под .sticky-header */
+#socials { scroll-margin-top: 90px; } /* при желании подстройте 90px под высоту шапки */
+
+@media (max-width:768px){
+  .notice-modal__content{ padding:16px; gap:10px; }
+  .notice-modal__icon{ width:36px; height:36px; font-size:1rem; }
+}
+
+    @media (max-width: 768px) {
+      .field-alert { top: 14%; max-width: 420px; padding: 12px; width: calc(100% - 20px); }
     }
   </style>
 </head>
 <body>
   <header class="sticky-header">
-    <img class="logo" src="logo.jpg">
+    <img class="logo" src="logo.jpg" alt="logo">
     <nav>
       <a href="#">SHOP</a>
-      <a href="#">CONTACT</a>
+      <a href="#socials">CONTACT</a>
     </nav>
-    <div class="cart-icon">
-      <svg class="cart-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <div class="cart-icon" title="Open cart">
+      <svg class="cart-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <polyline points="3 3 5 3 6.5 14 19 14 21 6 7 6"/>
         <circle cx="9" cy="19" r="1.5"/>
         <circle cx="17" cy="19" r="1.5"/>
       </svg>
-      <span class="cart-counter">0</span>
+      <span class="cart-counter" aria-live="polite">0</span>
     </div>
   </header>
-  <section class="hero-video">
+
+  <!-- FIELD ALERT ELEMENT (for validation messages) -->
+  <div id="fieldAlert" class="field-alert" role="alert" aria-live="assertive" style="display:none;">
+    <div class="icon"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i></div>
+    <div class="text" id="fieldAlertText">Please fill in all shipping fields!</div>
+    <button class="close-field-alert" aria-label="Close" id="closeFieldAlert">×</button>
+  </div>
+
+  <!-- CART UPDATE NOTICE MODAL -->
+<div id="cartUpdateNotice" class="notice-modal" role="dialog" aria-modal="true" aria-labelledby="cartUpdateTitle" style="display:none;">
+  <div class="notice-modal__content">
+    <button class="notice-modal__close" id="closeCartUpdate" aria-label="Close">×</button>
+    <div class="notice-modal__icon" aria-hidden="true"><i class="fas fa-info"></i></div>
+    <div class="notice-modal__body">
+      <h3 id="cartUpdateTitle">Cart updated</h3>
+      <p id="cartUpdateText">Some items in your cart were updated: prices or availability changed.</p>
+    </div>
+    <button class="notice-modal__ok" id="okCartUpdate">OK</button>
+  </div>
+</div>
+
+  <!-- UNAVAILABLE ITEMS NOTICE MODAL -->
+<div id="unavailableNotice" class="notice-modal notice-modal--danger" role="dialog" aria-modal="true" aria-labelledby="unavailableTitle" style="display:none;">
+  <div class="notice-modal__content">
+    <button class="notice-modal__close" id="closeUnavailable" aria-label="Close">×</button>
+    <div class="notice-modal__icon" aria-hidden="true"><i class="fas fa-exclamation-triangle"></i></div>
+    <div class="notice-modal__body">
+      <h3 id="unavailableTitle">Unavailable items</h3>
+      <p id="unavailableText">There are unavailable items in the cart. Please remove them before placing your order.</p>
+    </div>
+    <button class="notice-modal__ok" id="okUnavailable">OK</button>
+  </div>
+</div>
+
+  <!-- SUCCESS MESSAGE ELEMENT -->
+  <div id="orderSuccess" class="order-success" role="status" aria-live="polite" style="display:none;">
+    <div class="icon" aria-hidden="true"><i class="fas fa-check"></i></div>
+    <div class="text">Order created successfully — a manager will contact you.</div>
+    <button class="close-success" aria-label="Close" id="closeSuccess">×</button>
+  </div>
+
+  <section class="hero-video" aria-hidden="true">
     <video id="bg-video" autoplay muted loop playsinline>
       <source src="sponge.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
   </section>
-  <section class="collections"></section>
-  <div class="modal" id="productModal">
-    <div class="modal-content">
-      <span class="modal-close">×</span>
+
+  <section class="collections" aria-live="polite"></section>
+
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true">
+      <span class="modal-close" role="button" aria-label="Close modal">×</span>
       <div class="modal-images">
         <img id="modalImage" src="" alt="Product Image">
         <div class="carousel-nav" id="modalCarouselNav">
-          <button id="prevImage">←</button>
-          <button id="nextImage">→</button>
+          <button id="prevImage" aria-label="Previous image">←</button>
+          <button id="nextImage" aria-label="Next image">→</button>
         </div>
       </div>
       <div class="modal-description">
@@ -497,54 +774,63 @@
         </div>
         <div class="modal-buttons">
           <button class="add-to-cart">Add to Cart</button>
-          <button class="buy-btn">Buy</button>
         </div>
       </div>
     </div>
   </div>
-  <div class="cart-modal" id="cartModal">
-    <div class="cart-modal-content">
-      <span class="cart-close">×</span>
-      <div class="cart-items" id="cartItems"></div>
+
+  <div class="cart-modal" id="cartModal" aria-hidden="true">
+    <div class="cart-modal-content" role="dialog" aria-modal="true" aria-label="Cart">
+      <span class="cart-close" role="button" aria-label="Close cart">×</span>
+      <div class="cart-items" id="cartItems" aria-live="polite"></div>
+
       <div class="cart-summary">
         <h3>Order Summary</h3>
         <p id="cartSummaryText"></p>
       </div>
+
       <div class="cart-contact">
         <h3>Shipping Details</h3>
-        <input type="text" id="firstName" placeholder="First Name">
-        <input type="text" id="lastName" placeholder="Last Name">
-        <input type="text" id="address" placeholder="Shipping Address">
-        <select id="deliveryService">
+        <input type="text" id="firstName" placeholder="First Name" aria-label="First Name">
+        <input type="text" id="lastName" placeholder="Last Name" aria-label="Last Name">
+        <input type="text" id="address" placeholder="Shipping Address" aria-label="Shipping Address">
+        <select id="deliveryService" aria-label="Select Delivery Service">
           <option value="" disabled selected>Select Delivery Service</option>
-          <option value="cdek">CDEK</option>
-          <option value="russian_post">Russian Post</option>
-          <option value="boxberry">Boxberry</option>
-          <option value="courier">Courier</option>
+          <option value="inpost">InPost</option>
+          <option value="orlen_paczka">Orlen paczka</option>
+          <option value="poczta_polska">Poczta Polska</option>
+          <option value="dhl">DHL</option>
+          <option value="ems">EMS</option>
+          <option value="nova_post">Nova post</option>
         </select>
+
         <h3>Preferred Contact</h3>
-        <div class="contact-buttons">
-          <button class="contact-button" data-contact="telegram"><i class="fab fa-telegram-plane"></i></button>
-          <button class="contact-button" data-contact="whatsapp"><i class="fab fa-whatsapp"></i></button>
-          <button class="contact-button" data-contact="viber"><i class="fab fa-viber"></i></button>
+        <div class="contact-buttons" role="group" aria-label="Preferred contact methods">
+          <button class="contact-button" data-contact="telegram" aria-label="Telegram"><i class="fab fa-telegram-plane" aria-hidden="true"></i></button>
+          <button class="contact-button" data-contact="whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></button>
+          <button class="contact-button" data-contact="viber" aria-label="Viber"><i class="fab fa-viber" aria-hidden="true"></i></button>
         </div>
-        <input type="tel" id="phoneInput" placeholder="Phone Number">
-        <input type="text" id="telegramUsername" placeholder="Telegram username (optional)" style="display: none;">
+
+        <input type="tel" id="phoneInput" placeholder="Phone Number" aria-label="Phone Number">
+        <input type="text" id="telegramUsername" placeholder="Telegram username (optional)" style="display: none;" aria-label="Telegram username (optional)">
       </div>
+
       <div class="cart-buttons">
         <button id="submitOrder">Submit Order</button>
       </div>
     </div>
   </div>
+
   <footer>
     <p>© 2025 //RAW</p>
-    <div class="socials">
-      <a href="#"><i class="fab fa-instagram"></i>Instagram</a>
-      <a href="#"><i class="fab fa-telegram-plane"></i>Telegram</a>
-    </div>
+    <div class="socials" id="socials">
+    <a href="#"><i class="fab fa-instagram" aria-hidden="true"></i>Instagram</a>
+    <a href="#"><i class="fab fa-telegram-plane" aria-hidden="true"></i>Telegram</a>
+  </div>
   </footer>
+
   <script>
-    // Функция-заглушка для получения фиктивного набора товаров
+    // Stub: fetch a fake product list
     function fetchStubProducts() {
       return new Promise((resolve) => {
         setTimeout(() => {
@@ -553,73 +839,73 @@
             products: [
               {
                 product_id: "leather-rebel-1",
-                title: "Фиктивный товар 1 - LEATHER REBEL",
+                title: "Mock Product 1 - LEATHER REBEL",
                 price: 15000,
-                description: "Классическая панк-куртка с заклёпками.",
+                description: "Classic punk jacket with studs.",
                 images: ["/images/leather-rebel/1.jpg", "/images/leather-rebel/2.jpg"],
                 available: true
               },
               {
                 product_id: "steel-boots-1",
-                title: "Фиктивный товар 2 - STEEL BOOTS",
+                title: "Mock Product 2 - STEEL BOOTS",
                 price: 12000,
-                description: "Прочные ботинки с металлическим носком.",
+                description: "Durable boots with a steel toe.",
                 images: ["/images/steel-boots/1.jpg"],
                 available: true
               },
               {
                 product_id: "denim-jacket-1",
-                title: "Фиктивный товар 3 - DENIM JACKET",
+                title: "Mock Product 3 - DENIM JACKET",
                 price: 8500,
-                description: "Джинсовая куртка с потертостями.",
+                description: "Denim jacket with distressing.",
                 images: ["/images/denim-jacket/1.jpg", "/images/denim-jacket/2.jpg"],
                 available: true
               },
               {
                 product_id: "punk-shirt-1",
-                title: "Фиктивный товар 4 - PUNK SHIRT",
+                title: "Mock Product 4 - PUNK SHIRT",
                 price: 4500,
-                description: "Рубашка в стиле панк с ярким принтом.",
+                description: "Punk shirt with a bold print.",
                 images: ["/images/punk-shirt/1.jpg"],
                 available: true
               },
               {
                 product_id: "leather-pants-1",
-                title: "Фиктивный товар 5 - LEATHER PANTS",
+                title: "Mock Product 5 - LEATHER PANTS",
                 price: 10000,
-                description: "Кожаные брюки для смелых.",
+                description: "Leather pants for the bold.",
                 images: ["/images/leather-pants/1.jpg", "/images/leather-pants/2.jpg"],
                 available: true
               },
               {
                 product_id: "spiked-belt-1",
-                title: "Фиктивный товар 6 - SPIKED BELT",
+                title: "Mock Product 6 - SPIKED BELT",
                 price: 3000,
-                description: "Ремень с металлическими шипами.",
+                description: "Belt with metal spikes.",
                 images: ["/images/spiked-belt/1.jpg"],
                 available: true
               },
               {
                 product_id: "goth-gloves-1",
-                title: "Фиктивный товар 7 - GOTH GLOVES",
+                title: "Mock Product 7 - GOTH GLOVES",
                 price: 2500,
-                description: "Перчатки в готическом стиле.",
+                description: "Gothic-style gloves.",
                 images: ["/images/goth-gloves/1.jpg"],
                 available: true
               },
               {
                 product_id: "rebel-hat-1",
-                title: "Фиктивный товар 8 - REBEL HAT",
+                title: "Mock Product 8 - REBEL HAT",
                 price: 3500,
-                description: "Шляпа для бунтарей.",
+                description: "Hat for rebels.",
                 images: ["/images/rebel-hat/1.jpg", "/images/rebel-hat/2.jpg"],
                 available: true
               },
               {
                 product_id: "chain-necklace-1",
-                title: "Фиктивный товар 9 - CHAIN NECKLACE",
+                title: "Mock Product 9 - CHAIN NECKLACE",
                 price: 2000,
-                description: "Цепочка в стиле панк.",
+                description: "Punk-style chain necklace.",
                 images: ["/images/chain-necklace/1.jpg"],
                 available: true
               }
@@ -630,14 +916,14 @@
       });
     }
 
-    // Функция-заглушка для проверки корзины
+    // Stub: check cart
     function checkCartStub(cartItems) {
       return new Promise((resolve) => {
         setTimeout(() => {
           if (!cartItems || !Array.isArray(cartItems.items) || cartItems.items.some(item => !item.product_id)) {
             resolve({
               success: false,
-              error: "Некорректный или отсутствующий product_id"
+              error: "Invalid or missing product_id"
             });
             return;
           }
@@ -663,7 +949,7 @@
       });
     }
 
-    // Функция-заглушка для создания заказа
+    // Stub: create order
     function createOrderStub(orderData) {
       return new Promise((resolve) => {
         setTimeout(() => {
@@ -673,7 +959,7 @@
             orderData.items.some(item => !item.product_id || !item.quantity) ||
             !orderData.shipping ||
             !orderData.shipping.delivery_service ||
-            !['cdek', 'russian_post', 'boxberry', 'courier'].includes(orderData.shipping.delivery_service) ||
+            !['inpost', 'orlen_paczka', 'poczta_polska', 'dhl', 'ems', 'nova_post'].includes(orderData.shipping.delivery_service) ||
             !orderData.contact ||
             !orderData.contact.method ||
             !['telegram', 'whatsapp', 'viber'].includes(orderData.contact.method) ||
@@ -681,10 +967,11 @@
           ) {
             resolve({
               success: false,
-              error: "Отсутствует delivery_service или некорректный метод связи"
+              error: "Missing delivery_service or invalid contact method"
             });
             return;
           }
+          // backend returns order_id, but we don't show it to the user anymore
           const orderId = `ORD${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
           resolve({
             success: true,
@@ -694,7 +981,49 @@
       });
     }
 
-    // Функция для получения и отображения товаров
+    // Stub: update quantity on backend (imitates API for +/- in cart)
+function updateQuantityStub({ product_id, quantity, price }) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // Можно добавить рандомные фейлы/валидацию при желании
+      resolve({
+        success: true,
+        item: { product_id, quantity, price, available: true }
+      });
+    }, 400);
+  });
+}
+
+    // Show styled field alert instead of native alert
+    function showFieldAlert(message) {
+      const el = document.getElementById('fieldAlert');
+      const textEl = document.getElementById('fieldAlertText');
+      if (!el || !textEl) return;
+      textEl.textContent = message || 'Please fill in all shipping fields!';
+      el.style.display = 'flex';
+      el.setAttribute('aria-hidden', 'false');
+      el.tabIndex = -1;
+      el.focus();
+      clearTimeout(el._hideTimeout);
+      el._hideTimeout = setTimeout(() => {
+        el.style.display = 'none';
+        el.setAttribute('aria-hidden', 'true');
+      }, 5000);
+    }
+
+    // Close button for field alert
+    const closeFieldAlertBtn = document.getElementById('closeFieldAlert');
+    if (closeFieldAlertBtn) {
+      closeFieldAlertBtn.addEventListener('click', () => {
+        const el = document.getElementById('fieldAlert');
+        if (el) {
+          el.style.display = 'none';
+          clearTimeout(el._hideTimeout);
+        }
+      });
+    }
+
+    // Load and render products
     async function fetchProducts() {
       const collectionsSection = document.querySelector('.collections');
       try {
@@ -708,35 +1037,35 @@
               item.setAttribute('data-product-id', product.product_id);
               item.setAttribute('data-images', JSON.stringify(product.images));
               item.setAttribute('data-title', product.title);
-              item.setAttribute('data-price', `₽${product.price.toLocaleString('ru-RU')}`);
+              item.setAttribute('data-price', `€${product.price.toLocaleString('ru-RU')}`);
               item.setAttribute('data-description', product.description);
               item.innerHTML = `
                 <img src="${product.images[0]}" alt="${product.title}">
                 <div class="item-carousel-nav" style="${product.images.length <= 1 ? 'display: none;' : ''}">
-                  <button class="item-prev">←</button>
-                  <button class="item-next">→</button>
+                  <button class="item-prev" aria-label="Previous">←</button>
+                  <button class="item-next" aria-label="Next">→</button>
                 </div>
                 <h3>${product.title}</h3>
-                <p>₽${product.price.toLocaleString('ru-RU')}</p>
+                <p>€${product.price.toLocaleString('ru-RU')}</p>
               `;
               collectionsSection.appendChild(item);
             }
           });
         } else {
-          collectionsSection.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: red;">Ошибка: ${data.error}</p>`;
+          collectionsSection.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: red;">Error: ${data.error}</p>`;
         }
       } catch (error) {
-        collectionsSection.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: red;">Ошибка загрузки товаров: ${error.message}</p>`;
+        collectionsSection.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: red;">Error loading products: ${error.message}</p>`;
       }
     }
 
-    // Автозапуск видео и загрузка товаров
     document.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('bg-video');
       if (video) {
-        video.play().catch(e => console.log("Автовоспроизведение запрещено:", e));
+        video.play().catch(e => console.log("Autoplay prevented:", e));
       }
       fetchProducts();
+
       document.querySelector('.collections').addEventListener('click', (e) => {
         const item = e.target.closest('.collection-item');
         if (!item) return;
@@ -788,9 +1117,11 @@
         modalDescription.textContent = item.getAttribute('data-description');
         modalCarouselNav.style.display = currentImages.length > 1 ? 'flex' : 'none';
         productModal.style.display = 'flex';
+        productModal.setAttribute('aria-hidden', 'false');
       });
       closeModal.addEventListener('click', () => {
         productModal.style.display = 'none';
+        productModal.setAttribute('aria-hidden', 'true');
       });
       prevImage.addEventListener('click', () => {
         currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
@@ -803,12 +1134,13 @@
       productModal.addEventListener('click', (e) => {
         if (e.target === productModal) {
           productModal.style.display = 'none';
+          productModal.setAttribute('aria-hidden', 'true');
         } else if (e.target.classList.contains('add-to-cart')) {
           const modalContent = e.target.closest('.modal-content');
           const item = {
             product_id: document.querySelector(`.collection-item[data-title="${modalContent.querySelector('#modalTitle').textContent}"]`)?.getAttribute('data-product-id') || 'unknown',
             title: modalContent.querySelector('#modalTitle').textContent,
-            price: parseInt(modalContent.querySelector('#modalPrice').textContent.replace('₽', '').replace(',', '')),
+            price: parseInt(modalContent.querySelector('#modalPrice').textContent.replace('€', '').replace(',', '')),
             image: currentImages[0],
             quantity: 1
           };
@@ -820,8 +1152,7 @@
           }
           updateCart();
           productModal.style.display = 'none';
-        } else if (e.target.classList.contains('buy-btn')) {
-          alert('Redirecting to checkout...');
+          productModal.setAttribute('aria-hidden', 'true');
         }
       });
     }
@@ -833,38 +1164,88 @@
     const cartSummaryText = document.getElementById('cartSummaryText');
     const cartCounter = document.querySelector('.cart-counter');
 
-    async function updateCart() {
-      if (cartItemsContainer && cartSummaryText && cartCounter) {
-        cartItemsContainer.innerHTML = '';
-        let totalPrice = 0;
-        cart.forEach((item, index) => {
-          const cartItem = document.createElement('div');
-          cartItem.className = `cart-item ${item.available === false ? 'unavailable' : ''}`;
-          cartItem.innerHTML = `
-            <img src="${item.image}" alt="${item.title}">
-            <h4>${item.title} (x${item.quantity})</h4>
-            <p>₽${(item.price * item.quantity).toLocaleString('ru-RU')}</p>
-            <button class="cart-item-remove" data-index="${index}">Удалить</button>
-          `;
-          cartItemsContainer.appendChild(cartItem);
-          if (item.available !== false) {
-            totalPrice += item.price * item.quantity;
-          }
-        });
-        cartSummaryText.textContent = cart.map(item => `${item.title} (x${item.quantity}) - ${item.available === false ? 'недоступно' : `₽${(item.price * item.quantity).toLocaleString('ru-RU')}`}`).join('\n');
-        cartSummaryText.insertAdjacentHTML('beforeend', `\nИтого: ₽${totalPrice.toLocaleString('ru-RU')}`);
-        cartCounter.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+    // Delegated handlers for Remove and +/- buttons inside the cart
+if (cartItemsContainer) {
+  cartItemsContainer.addEventListener('click', async (e) => {
+    // remove item
+    if (e.target.classList.contains('cart-item-remove')) {
+      const index = parseInt(e.target.getAttribute('data-index'), 10);
+      if (!Number.isNaN(index)) {
+        cart.splice(index, 1);
+        updateCart();
+      }
+      return;
+    }
 
-        // Добавляем обработчики для кнопок удаления
-        document.querySelectorAll('.cart-item-remove').forEach(button => {
-          button.addEventListener('click', () => {
-            const index = parseInt(button.getAttribute('data-index'));
-            cart.splice(index, 1);
-            updateCart();
-          });
-        });
+    // quantity +/-
+    if (e.target.classList.contains('qty-btn')) {
+      const index = parseInt(e.target.getAttribute('data-index'), 10);
+      if (Number.isNaN(index) || !cart[index]) return;
+
+      const isIncrease = e.target.classList.contains('increase');
+      const current = cart[index].quantity;
+      const nextQty = isIncrease ? current + 1 : Math.max(1, current - 1);
+
+      // call stub (imitate backend update)
+      const resp = await updateQuantityStub({
+        product_id: cart[index].product_id,
+        quantity: nextQty,
+        price: cart[index].price
+      });
+
+      if (resp && resp.success) {
+        cart[index].quantity = resp.item.quantity;
+        await updateCart();
+      } else {
+        alert('Failed to update quantity. Please try again.');
       }
     }
+  });
+}
+
+    async function updateCart() {
+  if (!cartItemsContainer || !cartSummaryText || !cartCounter) return;
+
+  cartItemsContainer.innerHTML = '';
+  let totalPrice = 0;
+
+  cart.forEach((item, index) => {
+    const cartItem = document.createElement('div');
+    cartItem.className = `cart-item ${item.available === false ? 'unavailable' : ''}`;
+    cartItem.dataset.productId = item.product_id;
+    cartItem.dataset.price = item.price;
+    cartItem.dataset.index = index;
+
+    const itemSubtotal = item.price * item.quantity;
+    if (item.available !== false) totalPrice += itemSubtotal;
+
+    cartItem.innerHTML = `
+      <img src="${item.image}" alt="${item.title}">
+      <h4>${item.title}</h4>
+
+      <div class="cart-quantity">
+        <button class="qty-btn decrease" data-index="${index}" aria-label="Decrease">-</button>
+        <span class="qty-value" data-index="${index}">${item.quantity}</span>
+        <button class="qty-btn increase" data-index="${index}" aria-label="Increase">+</button>
+      </div>
+
+      <p>€${itemSubtotal.toLocaleString('ru-RU')}</p>
+
+      <button class="cart-item-remove" data-index="${index}">Remove</button>
+    `;
+    cartItemsContainer.appendChild(cartItem);
+  });
+
+  cartSummaryText.textContent = cart
+    .map(item => `${item.title} (x${item.quantity}) - ${
+      item.available === false ? 'unavailable' : `€${(item.price * item.quantity).toLocaleString('ru-RU')}`
+    }`)
+    .join('\n');
+
+  cartSummaryText.insertAdjacentHTML('beforeend', `\nSummary: €${totalPrice.toLocaleString('ru-RU')}`);
+
+  cartCounter.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+}
 
     async function checkCart() {
       if (cart.length === 0) {
@@ -892,16 +1273,16 @@
             return cartItem;
           });
           if (data.updated) {
-            alert('Некоторые товары в корзине обновлены: изменены цены или доступность.');
-          }
+          showCartUpdateNotice('Some items in your cart were updated: prices or availability changed.');
+        }
           await updateCart();
           return { success: true, hasUnavailable: cart.some(item => item.available === false) };
         } else {
-          alert(`Ошибка проверки корзины: ${data.error}`);
+          alert(`Cart verification error: ${data.error}`);
           return { success: false, error: data.error };
         }
       } catch (error) {
-        alert(`Ошибка проверки корзины: ${error.message}`);
+        alert(`Cart verification error: ${error.message}`);
         return { success: false, error: error.message };
       }
     }
@@ -936,22 +1317,103 @@
       } catch (error) {
         return {
           success: false,
-          error: `Ошибка создания заказа: ${error.message}`
+          error: `Order creation error: ${error.message}`
         };
       }
+    }
+
+    // Show success message (instead of displaying order number)
+    function showSuccessMessage() {
+      const el = document.getElementById('orderSuccess');
+      if (!el) return;
+      el.style.display = 'flex';
+      clearTimeout(el._hideTimeout);
+      el._hideTimeout = setTimeout(() => {
+        el.style.display = 'none';
+      }, 7000);
+    }
+
+    function showUnavailableNotice(message){
+  const modal = document.getElementById('unavailableNotice');
+  const text  = document.getElementById('unavailableText');
+  if(!modal || !text) return;
+  text.textContent = message || 'There are unavailable items in the cart. Please remove them before placing your order.';
+  modal.style.display = 'flex';
+  modal.setAttribute('aria-hidden', 'false');
+  modal.tabIndex = -1;
+  modal.focus();
+
+  clearTimeout(modal._hideTimeout);
+  modal._hideTimeout = setTimeout(() => hideUnavailableNotice(), 7000);
+}
+function hideUnavailableNotice(){
+  const modal = document.getElementById('unavailableNotice');
+  if(!modal) return;
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden', 'true');
+  clearTimeout(modal._hideTimeout);
+}
+// кнопки и клик по фону
+document.getElementById('closeUnavailable')?.addEventListener('click', hideUnavailableNotice);
+document.getElementById('okUnavailable')?.addEventListener('click', hideUnavailableNotice);
+document.getElementById('unavailableNotice')?.addEventListener('click', (e)=>{
+  if(e.target.id === 'unavailableNotice') hideUnavailableNotice();
+});
+
+    function showCartUpdateNotice(message){
+  const modal = document.getElementById('cartUpdateNotice');
+  const text  = document.getElementById('cartUpdateText');
+  if(!modal || !text) return;
+  text.textContent = message || 'Some items in your cart were updated: prices or availability changed.';
+  modal.style.display = 'flex';
+  modal.setAttribute('aria-hidden', 'false');
+  modal.tabIndex = -1;
+  modal.focus();
+
+  clearTimeout(modal._hideTimeout);
+  modal._hideTimeout = setTimeout(() => hideCartUpdateNotice(), 6000);
+}
+function hideCartUpdateNotice(){
+  const modal = document.getElementById('cartUpdateNotice');
+  if(!modal) return;
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden', 'true');
+  clearTimeout(modal._hideTimeout);
+}
+
+// кнопки и клик по фону
+document.getElementById('closeCartUpdate')?.addEventListener('click', hideCartUpdateNotice);
+document.getElementById('okCartUpdate')?.addEventListener('click', hideCartUpdateNotice);
+document.getElementById('cartUpdateNotice')?.addEventListener('click', (e)=>{
+  if(e.target.id === 'cartUpdateNotice') hideCartUpdateNotice();
+});
+
+    // Close button for success message
+    const closeSuccessBtn = document.getElementById('closeSuccess');
+    if (closeSuccessBtn) {
+      closeSuccessBtn.addEventListener('click', () => {
+        const el = document.getElementById('orderSuccess');
+        if (el) {
+          el.style.display = 'none';
+          clearTimeout(el._hideTimeout);
+        }
+      });
     }
 
     if (cartModal && cartClose) {
       document.querySelector('.cart-icon').addEventListener('click', async () => {
         await checkCart();
         cartModal.style.display = 'flex';
+        cartModal.setAttribute('aria-hidden', 'false');
       });
       cartClose.addEventListener('click', () => {
         cartModal.style.display = 'none';
+        cartModal.setAttribute('aria-hidden', 'true');
       });
       cartModal.addEventListener('click', (e) => {
         if (e.target === cartModal) {
           cartModal.style.display = 'none';
+          cartModal.setAttribute('aria-hidden', 'true');
         }
       });
     }
@@ -985,38 +1447,42 @@
         const deliveryService = document.getElementById('deliveryService').value;
 
         if (cart.length === 0) {
-          alert('Ваша корзина пуста!');
+          alert('Your cart is empty!');
           return;
         }
         if (!firstName || !lastName || !address || !deliveryService) {
-          alert('Пожалуйста, заполните все поля доставки!');
+          showFieldAlert('Please fill in all shipping fields!');
           return;
         }
         if (!phone) {
-          alert('Пожалуйста, введите номер телефона!');
+          showFieldAlert('Please enter your phone number!');
           return;
         }
         if (!selectedContact) {
-          alert('Пожалуйста, выберите способ связи!');
+          showFieldAlert('Please select a contact method!');
           return;
         }
 
         const cartCheck = await checkCart();
         if (!cartCheck.success) {
-          alert(`Ошибка проверки корзины: ${cartCheck.error}`);
+          alert(`Cart verification error: ${cartCheck.error}`);
           return;
         }
         if (cartCheck.hasUnavailable) {
-          alert('В корзине есть недоступные товары. Пожалуйста, удалите их перед оформлением заказа.');
-          return;
-        }
+  showUnavailableNotice('There are unavailable items in the cart. Please remove them before placing your order.');
+  return;
+}
 
         const result = await createOrder();
         if (result.success) {
-          alert(`Заказ успешно оформлен! Номер заказа: ${result.order_id}`);
+          // show the styled success message instead of the order number
+          showSuccessMessage();
+
+          // clear cart and fields
           cart = [];
           await updateCart();
           cartModal.style.display = 'none';
+          cartModal.setAttribute('aria-hidden', 'true');
           document.getElementById('firstName').value = '';
           document.getElementById('lastName').value = '';
           document.getElementById('address').value = '';
